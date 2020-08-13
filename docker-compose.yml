@@ -1,0 +1,32 @@
+version: '3.7'
+services:
+  crawler:
+    build: ./
+    environment:
+      - MONGO_HOST=mongo
+      - REDIS_HOST=redis
+      - MONGO_USER=root
+      - MONGO_PASS=example
+      - CRAWLER_AUTH_TOKEN=${CRAWLER_AUTH_TOKEN}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}
+      - AWS_REGION=${AWS_REGION}
+    networks:
+     - topograph-net
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+      resources:
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+        limits:
+          cpus: '1'
+          memory: 1024M
+
+networks:
+  topograph-net:
+    name: topograph-net
